@@ -1,0 +1,62 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:latest
+    command: postgres -c 'max_connections=200'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    restart: on-failure
+
+  app:
+    build:
+      context: .
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python3 manage.py collectstatic --no-input; python3 manage.py migrate; uvicorn dj_calendar.asgi:application --port 8000 --host 0.0.0.0 --reload'
+    volumes:
+      - static:/static
+      - .:/app/
+    depends_on:
+      - db
+    restart: on-failure
+
+#  redis-commander:
+#    image: rediscommander/redis-commander:latest
+#    restart: always
+#    environment:
+#    - REDIS_HOSTS=local:redis:6379
+#    - URL_PREFIX=/redis_admin
+
+  nginx:
+    command: nginx -g "daemon off;"
+    depends_on:
+      - app
+    image: nginx:alpine
+    restart: on-failure
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - static:/var/www/app/static
+    ports:
+      - "127.0.0.1:8100:8000"
+
+#  redis:
+#    build:
+#      context: .
+#      dockerfile: redis-initial/Dockerfile
+#      args:
+#       - ENV=prod
+#    volumes:
+#      - redis_data-testnet2:/data
+#    restart: on-failure
+
+#  wsify:
+#    build: ./wsify
+#    command: wsify -webhook=http://api:8000/check -debug
+    
+volumes:
+  postgresql-data:
+  static:
+    external: false

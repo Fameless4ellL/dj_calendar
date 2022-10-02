@@ -1,0 +1,10 @@
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.table.table-hover.table-bordered tr:hover {/* selector strong enough to overwrite bootsrap rule */
+  background:none;/* remove bg */
+}
+table tr td:hover{
+  background-color:gainsboro;
+  }
