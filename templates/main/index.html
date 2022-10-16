@@ -14,7 +14,7 @@
         <caption>
             <h2><a href="/date_{{ calendar_prev_month }}"><<</a>{{ calendar_title }}<a href="/date_{{ calendar_next_month }}">>></a></h2>
         </caption>
-        <a href="/date_{{ calendar_now.year }}_{{ calendar_now.month }}">Today</a>
+        <a href="/date_{{ calendar_now.year }}_{{ calendar_now.month }}_{{ choice.default }}">Today</a>
     <tr>
     {% for week in calendar_week %}
         <th>{{ week }}</th>
@@ -28,11 +28,12 @@
                     <td style="background: darkred;"><p style="accent-color: aliceblue;">{{ day }}</p>
                         {% for event in events %}
                             {% if day == event.date.day %}
-                                <div class="card border-primary">
-                                  <div class="card-header">Start at:{{ event.date|date:'H:i:s' }} | {{ event.headline }}</div>
-                                  <div class="card-body">
-                                    <a href="{{ event.link }}" class="btn btn-primary">Join</a>
-                                  </div>
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card border-primary">
+                                      <div class="card-header"><a href="{{ event.link }}">{{ event.headline }}</a>
+                                        <h6 class="card-subtitle mb-2 text-muted">Start at:{{ event.date|date:'H:i:s' }}</h6>
+                                      </div>
+                                    </div>
                                 </div>
                             {% endif %}
                         {% endfor %}
@@ -41,11 +42,12 @@
                     <td>{{ day }}
                         {% for event in events %}
                             {% if day == event.date.day %}
-                                <div class="card border-primary">
-                                  <div class="card-header">Start at:{{ event.date|date:'H:i:s' }} | {{ event.headline }}</div>
-                                  <div class="card-body">
-                                    <a href="{{ event.link }}" class="btn btn-primary">Join</a>
-                                  </div>
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card border-primary">
+                                      <div class="card-header"><a href="{{ event.link }}">{{ event.headline }}</a>
+                                        <h6 class="card-subtitle mb-2 text-muted">Start at:{{ event.date|date:'H:i:s' }}</h6>
+                                      </div>
+                                    </div>
                                 </div>
                             {% endif %}
                         {% endfor %}

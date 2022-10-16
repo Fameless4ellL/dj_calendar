@@ -9,7 +9,7 @@ from main.models import Event
 @async_to_sync
 async def index(request, year: int = datetime.now().year, month: int = datetime.now().month, group: str = None):
     events = Event.objects.select_related()
-    choice_list = events.values_list('group__name', flat=True)
+    choice_list = events.distinct('group__name').values_list('group__name', flat=True)
     choice = {}
     if len(choice_list) > 0:
         if group:
