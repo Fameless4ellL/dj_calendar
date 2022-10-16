@@ -23,13 +23,6 @@ services:
       - db
     restart: on-failure
 
-#  redis-commander:
-#    image: rediscommander/redis-commander:latest
-#    restart: always
-#    environment:
-#    - REDIS_HOSTS=local:redis:6379
-#    - URL_PREFIX=/redis_admin
-
   nginx:
     command: nginx -g "daemon off;"
     depends_on:
@@ -41,20 +34,6 @@ services:
       - static:/var/www/app/static
     ports:
       - "127.0.0.1:8100:8000"
-
-#  redis:
-#    build:
-#      context: .
-#      dockerfile: redis-initial/Dockerfile
-#      args:
-#       - ENV=prod
-#    volumes:
-#      - redis_data-testnet2:/data
-#    restart: on-failure
-
-#  wsify:
-#    build: ./wsify
-#    command: wsify -webhook=http://api:8000/check -debug
     
 volumes:
   postgresql-data:
