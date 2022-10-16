@@ -25,9 +25,31 @@
         {% for day in body %}
             {% if day != 0 %}
                 {% if day == calendar_now.day and calendar_current is True  %}
-                    <td style="background: darkred;"><p style="accent-color: aliceblue;">{{ day }}</p></td>
+                    <td style="background: darkred;"><p style="accent-color: aliceblue;">{{ day }}</p>
+                        {% for event in events %}
+                            {% if day == event.date.day %}
+                                <div class="card border-primary">
+                                  <div class="card-header">Start at:{{ event.date|date:'H:i:s' }} | {{ event.headline }}</div>
+                                  <div class="card-body">
+                                    <a href="{{ event.link }}" class="btn btn-primary">Join</a>
+                                  </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
                 {% else %}
-                    <td>{{ day }}</td>
+                    <td>{{ day }}
+                        {% for event in events %}
+                            {% if day == event.date.day %}
+                                <div class="card border-primary">
+                                  <div class="card-header">Start at:{{ event.date|date:'H:i:s' }} | {{ event.headline }}</div>
+                                  <div class="card-body">
+                                    <a href="{{ event.link }}" class="btn btn-primary">Join</a>
+                                  </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        </td>
                 {% endif %}
             {% else %}
                 <td></td>
@@ -39,5 +61,14 @@
 {% else %}
     <p>No calendar are available.</p>
 {% endif %}
+
+<select class="form-select" aria-label="Default select example" onChange="window.location.href=this.value">
+  <option selected value="/date_{{ calendar_now.year }}_{{ calendar_now.month }}_{{ choice.default }}">{{ choice.default }}</option>
+    {% for body in choice.choice %}
+        {% if choice.default != body %}
+            <option value="/date_{{ calendar_now.year }}_{{ calendar_now.month }}_{{ body }}">{{ body }}</option>
+        {% endif %}
+    {% endfor %}
+</select>
 </body>
 </html>

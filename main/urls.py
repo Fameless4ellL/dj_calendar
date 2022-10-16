@@ -5,5 +5,5 @@ from . import views
 
 urlpatterns = [
     path(r"", views.index, name='index'),
-    path(r"date_<int:year>_<int:month>", views.index, name='index'),
+    path(r"date_<int:year>_<int:month>_<str:group>", views.index, name='index'),
 ]
